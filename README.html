@@ -1,0 +1,61 @@
+import os
+import zipfile
+
+# Create folder structure
+folder_name = "/mnt/data/car-game"
+os.makedirs(folder_name, exist_ok=True)
+
+# index.html content
+index_html = """<!DOCTYPE html>
+<html>
+<head>
+  <title>Car Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>🚗 Car Game</h1>
+  <div class="gameArea"></div>
+  <div class="score">Score: 0</div>
+  <script src="script.js"></script>
+</body>
+</html>"""
+
+# style.css content
+style_css = """body {
+  background: black;
+  color: white;
+  text-align: center;
+}
+
+.gameArea {
+  position: relative;
+  margin: auto;
+  height: 600px;
+  width: 400px;
+  background: #333;
+  border: 3px solid #0f0;
+  overflow: hidden;
+}"""
+
+# script.js content
+script_js = """alert("🚗 Car Game Started!");"""
+
+# Write files
+with open(os.path.join(folder_name, "index.html"), "w", encoding="utf-8") as f:
+    f.write(index_html)
+
+with open(os.path.join(folder_name, "style.css"), "w", encoding="utf-8") as f:
+    f.write(style_css)
+
+with open(os.path.join(folder_name, "script.js"), "w", encoding="utf-8") as f:
+    f.write(script_js)
+
+# Create zip file
+zip_path = "/mnt/data/car-game.zip"
+with zipfile.ZipFile(zip_path, 'w') as zipf:
+    for root, dirs, files in os.walk(folder_name):
+        for file in files:
+            file_path = os.path.join(root, file)
+            zipf.write(file_path, arcname=os.path.relpath(file_path, folder_name))
+
+zip_path
